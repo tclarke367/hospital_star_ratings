@@ -46,3 +46,10 @@ def fix_name(name):
     for symbol in [" ", ".", "-"]:
         name = name.replace(symbol, "")
     return name
+
+
+def describe(label, stars):
+    #how many hospitals, average stars, percent that got 1-2 stars
+    low = len([s for s in stars if s <= 2])
+    avg = round(statistics.mean(stars), 2)
+    return f"  {label}: {len(stars)} hospitals, avg {avg} stars, {round(100 * low / len(stars))}% got 1-2 stars"
