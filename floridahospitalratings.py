@@ -80,7 +80,38 @@ def main():
                 "pct_uninsured": county["pct_uninsured"],
             })
 
-    print(len(rated), "of", len(hospitals), "Florida hospitals have a star rating")
+       #start the report
+    report = [f"{len(rated)} of {len(hospitals)} Florida hospitals have a star rating", ""]
+
+    # compare forprofit vs nonprofit hospitals
+    for_profit = [h for h in rated if h["ownership"] == "Proprietary"]
+    non_profit = [h for h in rated if h["ownership"].startswith("Voluntary")]
+    report.append("BY OWNERSHIP")
+    report.append(describe("for-profit", [h["stars"] for h in for_profit]))
+    report.append(describe("non-profit", [h["stars"] for h in non_profit]))
+    report.append("")
+
+    # compare counties above vs below the median for each demographic
+    report.append("BY COUNTY DEMOGRAPHICS (above vs. below the middle county)")
+    for column in ["pct_black", "pct_hispanic", "pct_uninsured"]:
+        middle = statistics.median([h[column] for h in rated])
+        above = [h["stars"] for h in rated if h[column] > middle]
+        below = [h["stars"] for h in rated if h[column] <= middle]
+        report.append(f"{column} (middle = {middle}%)")
+        report.append(describe("above", above))
+        report.append(describe("below", below))
+    report.append("")
+
+    # is the uninsured gap only because of for-profit hospitals?
+    # check it again inside each ownership group
+    report.append("UNINSURED GAP INSIDE EACH OWNERSHIP GROUP")
+    middle = statistics.median([h["pct_uninsured"] for h in rated])
+    report.append(describe("for-profit, high uninsured", [h["stars"] for h in for_profit if h["pct_uninsured"] > middle]))
+    report.append(describe("for-profit, low uninsured", [h["stars"] for h in for_profit if h["pct_uninsured"] <= middle]))
+    report.append(describe("non-profit, high uninsured", [h["stars"] for h in non_profit if h["pct_uninsured"] > middle]))
+    report.append(describe("non-profit, low uninsured", [h["stars"] for h in non_profit if h["pct_uninsured"] <= middle]))
+
+    print("\n".join(report))
 
 
 if __name__ == "__main__":
