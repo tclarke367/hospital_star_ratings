@@ -19,3 +19,30 @@ def get_hospitals():
         return []
     return response.json()["results"]
 
+def get_counties():
+    # get percent of Black, percent of Hispanic, and percent of uninsured for every Florida county (from the CDC)
+    settings = {"where": "ST_ABBR='FL'", "outFields": "COUNTY,EP_AFAM,EP_HISP,EP_UNINSUR",
+                "returnGeometry": "false", "f": "json"}
+    response = requests.get(COUNTY_URL, params=settings)
+    if response.status_code != 200:
+        print("Couldn't get counties, error", response.status_code)
+        return {}
+
+    counties = {}
+    for item in response.json()["features"]:
+        info = item["attributes"]
+        counties[fix_name(info["COUNTY"])] = {
+            "pct_black": info["EP_AFAM"],
+            "pct_hispanic": info["EP_HISP"],
+            "pct_uninsured": info["EP_UNINSUR"],
+        }
+    return counties
+
+
+def fix_name(name):
+    # Medicare site uses all caps n says "ST. JOHNS" and the CDC says "St. Johns County",
+    # make both look the same: uppercase, no "COUNTY", no spaces,dots, or dashes
+    name = name.upper().replace(" COUNTY", "")
+    for symbol in [" ", ".", "-"]:
+        name = name.replace(symbol, "")
+    return name
