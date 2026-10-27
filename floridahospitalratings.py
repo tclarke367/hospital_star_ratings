@@ -53,3 +53,35 @@ def describe(label, stars):
     low = len([s for s in stars if s <= 2])
     avg = round(statistics.mean(stars), 2)
     return f"  {label}: {len(stars)} hospitals, avg {avg} stars, {round(100 * low / len(stars))}% got 1-2 stars"
+
+
+
+
+def main():
+    # get data from both websites
+    hospitals = get_hospitals()
+    counties = get_counties()
+    if not hospitals or not counties:
+        print("Missing data, stopping")
+        return
+
+    #keep only the hospitals that have a star rating and add their county's info
+    rated = []
+    for h in hospitals:
+        if h["hospital_overall_rating"].isdigit():
+            county = counties[fix_name(h["countyparish"])]
+            rated.append({
+                "name": h["facility_name"],
+                "county": h["countyparish"],
+                "ownership": h["hospital_ownership"],
+                "stars": int(h["hospital_overall_rating"]),
+                "pct_black": county["pct_black"],
+                "pct_hispanic": county["pct_hispanic"],
+                "pct_uninsured": county["pct_uninsured"],
+            })
+
+    print(len(rated), "of", len(hospitals), "Florida hospitals have a star rating")
+
+
+if __name__ == "__main__":
+    main()
