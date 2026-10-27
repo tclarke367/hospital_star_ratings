@@ -1,0 +1,22 @@
+168 of 221 Florida hospitals have a star rating
+
+BY OWNERSHIP
+  for-profit: 64 hospitals, avg 2.39 stars, 59% got 1-2 stars
+  non-profit: 76 hospitals, avg 3.53 stars, 13% got 1-2 stars
+
+BY COUNTY DEMOGRAPHICS (above vs. below the middle county)
+pct_black (middle = 14.2%)
+  above: 84 hospitals, avg 3.01 stars, 32% got 1-2 stars
+  below: 84 hospitals, avg 3.11 stars, 32% got 1-2 stars
+pct_hispanic (middle = 17.4%)
+  above: 82 hospitals, avg 2.93 stars, 37% got 1-2 stars
+  below: 86 hospitals, avg 3.19 stars, 28% got 1-2 stars
+pct_uninsured (middle = 11.9%)
+  above: 80 hospitals, avg 2.84 stars, 40% got 1-2 stars
+  below: 88 hospitals, avg 3.26 stars, 25% got 1-2 stars
+
+UNINSURED GAP INSIDE EACH OWNERSHIP GROUP
+  for-profit, high uninsured: 37 hospitals, avg 2.24 stars, 62% got 1-2 stars
+  for-profit, low uninsured: 27 hospitals, avg 2.59 stars, 56% got 1-2 stars
+  non-profit, high uninsured: 25 hospitals, avg 3.28 stars, 28% got 1-2 stars
+  non-profit, low uninsured: 51 hospitals, avg 3.65 stars, 6% got 1-2 stars

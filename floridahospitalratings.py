@@ -113,6 +113,15 @@ def main():
 
     print("\n".join(report))
 
+       # save the results to files
+    os.makedirs("output", exist_ok=True)
+    with open("output/rated_hospitals.csv", "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=rated[0].keys())
+        writer.writeheader()
+        writer.writerows(rated)
+    with open("output/summary.txt", "w") as f:
+        f.write("\n".join(report))
+    print("Saved results to the output folder") 
 
 if __name__ == "__main__":
     main()
